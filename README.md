@@ -11,9 +11,9 @@ Official implementation of `DragAPart: Learning a Part-Level Motion Prior for Ar
 ![Teaser](https://dragapart.github.io/resources/teaser.png)
 
 # TODO
-[] Release inference code.
-[] Release training code.
-[] Release dataset downloading script and dataloader code.
+- [ ] Release inference code.
+- [ ] Release training code.
+- [ ] Release dataset downloading script and dataloader code.
 
 # Citation
 
