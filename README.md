@@ -2,7 +2,7 @@
 Official implementation of `DragAPart: Learning a Part-Level Motion Prior for Articulated Objects'
 
 <p align="center">
-  [<a href=""><strong>arXiv</strong></a>]
+  [<a href="https://arxiv.org/abs/2403.15382"><strong>arXiv</strong></a>]
   [<a href="https://huggingface.co/spaces/rayli/DragAPart"><strong>Demo</strong></a>]
   [<a href="https://dragapart.github.io/"><strong>Project</strong></a>]
   [<a href="#citation"><strong>BibTeX</strong></a>]
@@ -21,7 +21,7 @@ Official implementation of `DragAPart: Learning a Part-Level Motion Prior for Ar
 @article{li2024dragapart,
   title     = {DragAPart: Learning a Part-Level Motion Prior for Articulated Objects},
   author    = {Li, Ruining and Zheng, Chuanxia and Rupprecht, Christian and Vedaldi, Andrea},
-  journal   = {arXiv preprint arXiv:2403.xxxxx},
+  journal   = {arXiv preprint arXiv:2403.15382},
   year      = {2024}
 }
 ```
