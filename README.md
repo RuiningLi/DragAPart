@@ -10,6 +10,9 @@ Official implementation of `DragAPart: Learning a Part-Level Motion Prior for Ar
 
 ![Teaser](https://dragapart.github.io/resources/teaser.png)
 
+# Inference
+We are running a bit behind the schedule in code release. But if you want to see the model architecture and the inference code, you can go to the [huggingface demo](https://huggingface.co/spaces/rayli/DragAPart/tree/main).
+
 # TODO
 - [ ] Release inference code.
 - [ ] Release training code.
