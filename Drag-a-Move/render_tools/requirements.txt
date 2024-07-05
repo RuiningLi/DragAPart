@@ -1,0 +1,4 @@
+sapien == 2.1.0 # for Linux
+opencv-contrib-python
+open3d
+transforms3d
