@@ -21,6 +21,8 @@ accelerate launch --multi_gpu --mixed_precision fp16 --num_processes 8 train.py 
 ### Data
 See the `Drag-a-Move` folder.
 
+If you need the real-world images and our manually defined drags for evaluation, please contact [me](mailto:ruining@robots.ox.ac.uk).
+
 ### TODO
 - [x] Release inference code.
 - [x] Release training code.
