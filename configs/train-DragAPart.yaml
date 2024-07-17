@@ -1,0 +1,29 @@
+image_size: 256
+
+results_dir: "./exp-runs"
+random_seed: 1024
+num_steps: 150000
+global_batch_size: 32
+num_workers: 2
+log_every: 50
+ckpt_every: 5000
+visualize_every: 5
+
+learning_rate: 1.e-5
+importance_sampling: 0
+learn_sigma: false
+
+# Model architecture
+one_sided_attn: true
+flow_original_res: true
+
+model_args:
+  class_dropout_prob: 0.1
+
+data_args:
+  dataset_root_folder: /scratch/shared/beegfs/ruining/data/GAPartNet-rendering-v7/train
+  extra_keys: ["clip_pixel_values"]
+  verbose: false
+
+visualization_args:
+  cfg_scale: 1.0

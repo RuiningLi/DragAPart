@@ -11,6 +11,7 @@ from PIL import Image
 import torch
 from torch.utils.data import Dataset
 from torchvision import transforms
+from transformers import CLIPProcessor
 
 
 class DragAMoveDataset(Dataset):
@@ -43,6 +44,8 @@ class DragAMoveDataset(Dataset):
         enable_horizontal_flip: bool = True,
         random_category_prob: float = 0.5,
         only_large_motion: bool = False,
+        extra_keys: Optional[List[str]] = None,
+        verbose: bool = False,
     ):
         """
         Args:
@@ -64,6 +67,8 @@ class DragAMoveDataset(Dataset):
             the rest (1 - random_category_prob) is weighted by the number of instances in the category.
         - only_large_motion: whether to sample only large motions, i.e., conditioning image and reconstruction image are
             guaranteed to have large time difference.
+        - extra_keys: list of extra keys to be included in the dataset. Currently support: clip_pixel_values.
+        - verbose: whether to print verbose information.
         """
         super().__init__()
         self.sample_size = (sample_size, sample_size)
@@ -126,6 +131,14 @@ class DragAMoveDataset(Dataset):
         self.total_num_cam_viewpoints = total_num_cam_viewpoints
         self.enable_horizontal_flip = enable_horizontal_flip
         self.max_num_drags = max_num_drags
+
+        self.extra_keys = extra_keys
+        if extra_keys is not None:
+            for key in extra_keys:
+                if key == "clip_pixel_values":
+                    self.clip_processor = CLIPProcessor.from_pretrained("openai/clip-vit-large-patch14")
+
+        self.verbose = verbose
 
     def _add_background(self, pixel_values: torch.Tensor):
         assert (
@@ -213,13 +226,6 @@ class DragAMoveDataset(Dataset):
 
         return drags
 
-    def get_pixel_values(self, rgb_root, rgb_path):
-        pixel_values = self.pixel_transforms(
-            Image.open(osp.join(rgb_root, rgb_path)).convert("RGBA")
-        )
-        pixel_values = self._add_background(pixel_values)[:3]
-        return pixel_values
-
     def get_batch(self, idx):
             try:
                 category = random.choices(self.categories, weights=self.category_sample_probs, k=1)[0]
@@ -274,8 +280,18 @@ class DragAMoveDataset(Dataset):
                 cond_image = Image.open(cond_rgb_path).convert("RGB")
                 cond_pixel_values = self.pixel_transforms(cond_image)
 
+                extra_values = {}
+                if self.extra_keys is not None:
+                    for key in self.extra_keys:
+                        if key == "clip_pixel_values":
+                            extra_values["clip_pixel_values"] = self.clip_processor(
+                                images=cond_image, return_tensors="pt"
+                            ).pixel_values
+                        else:
+                            raise NotImplementedError(f"Extra key {key} is not supported.")
+
             except Exception as e:
-                print(e)
+                if self.verbose: print(e)
                 return None
             
             horizontal_flip = random.random() < 0.5
@@ -286,12 +302,14 @@ class DragAMoveDataset(Dataset):
                 drags[not_all_zeros, 0] = 1 - drags[not_all_zeros, 0]
                 drags[not_all_zeros, 2] = 1 - drags[not_all_zeros, 2]
 
-            return (
-                recon_pixel_values,
-                cond_pixel_values,
-                category,
-                drags,
+            datum = dict(
+                recon_pixel_values=recon_pixel_values,
+                cond_pixel_values=cond_pixel_values,
+                category=category,
+                drags=drags,
             )
+            datum.update(extra_values)
+            return datum
 
     def __len__(self):
         return self.total_num_instances
@@ -300,22 +318,8 @@ class DragAMoveDataset(Dataset):
         while True:
             batch = self.get_batch(idx)
             if batch is not None:
-                (
-                    recon_pixel_values,
-                    cond_pixel_values,
-                    category,
-                    drags,
-                ) = batch
-                break
+                return batch
             idx = random.randint(0, self.total_num_instances - 1)
-
-        sample = dict(
-            recon_pixel_values=recon_pixel_values,
-            cond_pixel_values=cond_pixel_values,
-            category=category,
-            drags=drags,
-        )
-        return sample
 
 
 if __name__ == "__main__":

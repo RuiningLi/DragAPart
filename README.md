@@ -1,5 +1,5 @@
 # DragAPart
-Official implementation of `DragAPart: Learning a Part-Level Motion Prior for Articulated Objects' (ECCV 2024)
+Official implementation of 'DragAPart: Learning a Part-Level Motion Prior for Articulated Objects' (ECCV 2024)
 
 <p align="center">
   [<a href="https://arxiv.org/abs/2403.15382"><strong>arXiv</strong></a>]
@@ -10,15 +10,23 @@ Official implementation of `DragAPart: Learning a Part-Level Motion Prior for Ar
 
 ![Teaser](https://dragapart.github.io/resources/teaser.png)
 
-# Inference
-We are running a bit behind the schedule in code release. But if you want to see the model architecture and the inference code, you can go to the [huggingface demo](https://huggingface.co/spaces/rayli/DragAPart/tree/main).
+### Inference
+Please refer to the [huggingface demo](https://huggingface.co/spaces/rayli/DragAPart/tree/main).
 
-# TODO
+### Training
+```
+accelerate launch --multi_gpu --mixed_precision fp16 --num_processes 8 train.py --config configs/train-DragAPart.yaml --wandb
+```
+
+### Data
+See the `Drag-a-Move` folder.
+
+### TODO
 - [x] Release inference code.
-- [ ] Release training code.
+- [x] Release training code.
 - [x] Release dataset downloading script and dataloader code.
 
-# Citation
+### Citation
 
 ```
 @article{li2024dragapart,
@@ -29,6 +37,6 @@ We are running a bit behind the schedule in code release. But if you want to see
 }
 ```
 
-# Acknowledgements
+### Acknowledgements
 We would like to thank [Minghao Chen](https://silent-chen.github.io/), [Junyu Xie](https://scholar.google.com/citations?user=cDMqaTYAAAAJ&hl=en), and [Laurynas Karazija](https://karazijal.github.io/) for insightful discussions.
 This work is in part supported by a Toshiba Research Studentship and ERC-CoG UNION 101001212.
