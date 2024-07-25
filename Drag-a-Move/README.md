@@ -9,7 +9,7 @@ python render.py
 to render a single model. This script automatically saves the needed meta information to enable subsequent drag sampling (to sample drags _on the fly_, see [here](https://github.com/RuiningLi/DragAPart/blob/main/dataset.py)).
 
 ## Pre-Rendered Version.
-We plan to release the pre-rendered version of Drag-a-Move, which we used to train DragAPart, *soon*!
+Our pre-rendered version is available through [Academic Torrents](https://academictorrents.com/details/2e955e41f40147603641573b7e839efae9af9a7f).
 
 # Citation
 If you use the dataset in your work, please cite:
